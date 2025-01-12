@@ -3,6 +3,8 @@ import "./globals.css";
 import Header from "./components/Header";
 import { ThemeProvider } from "next-themes";
 import ThemeCom from "./components/ThemeCom";
+import { ClerkProvider } from "@clerk/nextjs"; // Correct import
+import { ThemeModeScript } from "flowbite-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,16 +24,21 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+    <head>
+      <ThemeModeScript/>
+    </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <ThemeProvider>
-          <ThemeCom suppressHydrationWarning>
-            <Header />
-            <div suppressHydrationWarning>{children}</div>
-          </ThemeCom>
-        </ThemeProvider>
+        <ClerkProvider> {/* Wrap your app with ClerkProvider */}
+          <ThemeProvider>
+            <ThemeCom suppressHydrationWarning>
+              <Header />
+              <div suppressHydrationWarning>{children}</div>
+            </ThemeCom>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
